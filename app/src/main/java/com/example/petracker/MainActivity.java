@@ -1,4 +1,4 @@
-package com.example.petrackerviews;
+package com.example.petracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEditPersonalInfo (View view) {
         Intent intent = new Intent(this, EditPersonalInfo.class);
+        startActivity(intent);
+    }
+
+    public void toTrackGPSActivity (View view){
+        Intent intent = new Intent(this,GPS_track_activity.class);
         startActivity(intent);
     }
 }

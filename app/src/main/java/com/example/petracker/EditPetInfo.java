@@ -1,4 +1,4 @@
-package com.example.petrackerviews;
+package com.example.petracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
