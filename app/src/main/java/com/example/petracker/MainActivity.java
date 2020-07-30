@@ -33,4 +33,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,GPS_track_activity.class);
         startActivity(intent);
     }
+
+    public void toGetQRCode (View view) {
+        Intent intent = new Intent(this, GetQRCode.class);
+        startActivity(intent);
+    }
 }
