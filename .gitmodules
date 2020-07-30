@@ -1,0 +1,3 @@
+[submodule "tracker-api"]
+	path = tracker-api
+	url = https://git.heroku.com/rocky-hamlet-24243.git
