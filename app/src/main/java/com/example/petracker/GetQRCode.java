@@ -15,13 +15,20 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.net.URL;
+
 public class GetQRCode extends AppCompatActivity {
     private Context mContext;
     private Activity mActivity;
 
     private ImageView qrView;
-    private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Frocky-hamlet-24243.herokuapp.com%2FadoptionCenters&chs=512x512";
-    private String databaseApi = "https://rocky-hamlet-24243.herokuapp.com";
+//    private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Frocky-hamlet-24243.herokuapp.com%2FadoptionCenters&chs=512x512";
+    private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=";
+    private String databaseApi = "https%3A%2F%2Frocky-hamlet-24243.herokuapp.com%2Fcustomer%2F";
+
+    String userId = "5f2abeba097fbf4475b98910";
+    String userInfoUrl = qrApi + databaseApi + userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,8 @@ public class GetQRCode extends AppCompatActivity {
 
         // Initialize a new ImageRequest
         ImageRequest imageRequest = new ImageRequest(
-                qrApi, // Image URL
+//                qrApi, // Image URL
+                userInfoUrl,
                 new Response.Listener<Bitmap>() { // Bitmap listener
                     @Override
                     public void onResponse(Bitmap response) {
