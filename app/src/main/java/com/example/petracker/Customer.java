@@ -1,5 +1,9 @@
 package com.example.petracker;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Customer {
@@ -9,6 +13,13 @@ public class Customer {
     String tracker;
     String phoneNumber;
     ArrayList<Pet> pet;
+//    ArrayList<String> pet;
+
+//    public void JsonM (String json) throws JSONException {
+//        JSONObject cus = new JSONObject(json);
+//        JSONArray JsonArrayPets = cus.getJSONArray("pets");
+//        for (int i = 0; i < JsonArrayPets.length(); i++) this.pet.add(JsonArrayPets.getString(i));
+//    }
 
     public Customer() {
     }
