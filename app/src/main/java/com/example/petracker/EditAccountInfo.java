@@ -7,20 +7,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EditAccountInfo extends AppCompatActivity {
 
-    private String userId = "5f2abeba097fbf4475b9890c";
+    private String userId = "5f2abed1097fbf4475b99735";
     private String apiURL = "https://rocky-hamlet-24243.herokuapp.com/updateUser/";
     private String updateURL = "https://rocky-hamlet-24243.herokuapp.com/updateUser/" + userId;
     private String getURL = "https://rocky-hamlet-24243.herokuapp.com/user/" + userId;
@@ -58,6 +64,7 @@ public class EditAccountInfo extends AppCompatActivity {
                     String mCustomer = user.getString("customer");
                     mUser = new UserRaw(id, mUsername, mPassword, mCustomer);
                     username.setText(mUser.Username);
+                    //Toast.makeText(getApplicationContext(), "Retrieved user", Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -68,10 +75,51 @@ public class EditAccountInfo extends AppCompatActivity {
 
             }
         });
+
+        queue.add(stringRequest);
     }
 
     public void onUpdateClick (View view) {
-//        if (curPw.getText().toString().contentEquals(mUser.Password))
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
+        if (curPw.getText().toString().contentEquals(mUser.Password)) {
+            if (newPw.getText().toString().contentEquals(confirmPw.getText().toString())) {
+                Toast.makeText(view.getContext(), "Saving...", Toast.LENGTH_SHORT).show();
+
+                // Create the JSONObject ready to update
+                Map<String, String> params = new HashMap();
+                params.put("password", newPw.getText().toString());
+                JSONObject parameters = new JSONObject(params);
+
+                JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.PUT, updateURL, parameters, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Toast.makeText(view.getContext(), response, Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                queue.add(stringRequest);
+                curPw.setText("");
+                newPw.setText("");
+                confirmPw.setText("");
+            }
+            else { // newPw != confirmPw
+                Toast.makeText(this, "Confirm Password doesn't match New Password!", Toast.LENGTH_SHORT).show();
+                curPw.setText("");
+                newPw.setText("");
+                confirmPw.setText("");
+            }
+        }
+        else { // curPw doesn't match
+            Toast.makeText(this, "Incorrect Current Password!", Toast.LENGTH_SHORT).show();
+            curPw.setText("");
+            newPw.setText("");
+            confirmPw.setText("");
+        }
     }
 
     class UserRaw {
