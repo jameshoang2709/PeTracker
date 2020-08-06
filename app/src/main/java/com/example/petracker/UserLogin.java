@@ -21,11 +21,16 @@ import org.json.JSONObject;
 
 public class UserLogin extends AppCompatActivity {
     private String url = "https://rocky-hamlet-24243.herokuapp.com/users/";
+<<<<<<< HEAD
     private User mUser;
+=======
+    //private EditAccountInfo.UserRaw mUser;
+>>>>>>> ffdfdb1c5809f65fb926761844cb9b0c6904fc69
     EditText uname;
     EditText pword;
     Button loginButton;
     TextView regText;
+    User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +54,17 @@ public class UserLogin extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 String user = uname.getText().toString().trim();
+=======
+               String user = uname.getText().toString().trim();
+>>>>>>> ffdfdb1c5809f65fb926761844cb9b0c6904fc69
                 String checkUser = url + user;
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+<<<<<<< HEAD
                             JSONObject tempUser = new JSONObject(response);
                             String id = tempUser.getString("_id");
                             String usrnm = tempUser.getString("username");
@@ -64,6 +74,10 @@ public class UserLogin extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+=======
+                            mUser = JsonManager.parseUserData(response).get(0);
+                        } catch (Exception e) {}
+>>>>>>> ffdfdb1c5809f65fb926761844cb9b0c6904fc69
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -72,6 +86,10 @@ public class UserLogin extends AppCompatActivity {
                     }
                 });
 
+<<<<<<< HEAD
+=======
+                //String user = uname.getText().toString().trim();
+>>>>>>> ffdfdb1c5809f65fb926761844cb9b0c6904fc69
                 Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
                 loginIntent.putExtra("userId", user);
                 startActivity(loginIntent);

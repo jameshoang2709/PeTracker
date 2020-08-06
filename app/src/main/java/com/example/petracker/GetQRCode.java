@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -187,6 +188,7 @@ public class GetQRCode extends AppCompatActivity {
             qr.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             outStream.flush();
             outStream.close();
+            Toast.makeText(this, "QR code saved to Gallery", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             Log.e("SaveQR", e.getLocalizedMessage());
             e.printStackTrace();

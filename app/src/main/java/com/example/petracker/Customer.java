@@ -12,9 +12,7 @@ public class Customer {
     String email;
     String tracker;
     String phoneNumber;
-<<<<<<< HEAD
     ArrayList<String> petIds;
-=======
     ArrayList<Pet> pet;
 //    ArrayList<String> pet;
 
@@ -23,7 +21,6 @@ public class Customer {
 //        JSONArray JsonArrayPets = cus.getJSONArray("pets");
 //        for (int i = 0; i < JsonArrayPets.length(); i++) this.pet.add(JsonArrayPets.getString(i));
 //    }
->>>>>>> a8934a3b6fa1a1df5313a520d1a3633050e9d11d
 
     public Customer() {
     }
