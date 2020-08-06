@@ -16,7 +16,7 @@ public class EditPersonalInfo extends AppCompatActivity {
         setContentView(R.layout.activity_edit_personal_info);
         setTitle(R.string.edit_personal_info_name);
         addr = getIntent().getStringExtra("address");
-        a = (EditText) findViewById(R.id.eperi_editText_address);
+        a = (EditText) findViewById(R.id.eperi_editText_email);
         a.setText(addr);
     }
 }
