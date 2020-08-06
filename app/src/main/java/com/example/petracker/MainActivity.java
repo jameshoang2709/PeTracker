@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,GPS_track_activity.class);
         startActivity(intent);
     }
-<<<<<<< HEAD
-=======
 
     public void toGetQRCode (View view) {
+        String myId = "abcdefghijkl";
         Intent intent = new Intent(this, GetQRCode.class);
+        intent.putExtra("userId", myId);
         startActivity(intent);
     }
 
@@ -46,5 +46,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, UserLogin.class);
         startActivity(intent);
     }
->>>>>>> 8074c2b637704b87b9a204c2cb968cf5d3dd45ea
 }
