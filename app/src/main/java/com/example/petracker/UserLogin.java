@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class UserLogin extends AppCompatActivity {
     private String url = "https://rocky-hamlet-24243.herokuapp.com/users/";
-    private EditAccountInfo.UserRaw mUser;
+    private User mUser;
     EditText uname;
     EditText pword;
     Button loginButton;
@@ -49,19 +49,18 @@ public class UserLogin extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* String user = uname.getText().toString().trim();
+                String user = uname.getText().toString().trim();
                 String checkUser = url + user;
-                        StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject user = new JSONObject(response);
-                            String id = user.getString("_id");
-                            String mUsername = user.getString("username");
-                            String mPassword = user.getString("password");
-                            String mCustomer = user.getString("customer");
-                            mUser = new EditAccountInfo.UserRaw(id, mUsername, mPassword, mCustomer);
-                            username.setText(mUser.Username);
+                            JSONObject tempUser = new JSONObject(response);
+                            String id = tempUser.getString("_id");
+                            String usrnm = tempUser.getString("username");
+                            String psswrd = tempUser.getString("password");
+                            String cust = tempUser.getString("customer");
+                            mUser = new User(id, usrnm, psswrd, cust);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -72,8 +71,7 @@ public class UserLogin extends AppCompatActivity {
 
                     }
                 });
-*/
-                String user = uname.getText().toString().trim();
+
                 Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
                 loginIntent.putExtra("userId", user);
                 startActivity(loginIntent);

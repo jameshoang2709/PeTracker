@@ -74,7 +74,7 @@ public class EditAccountInfo extends AppCompatActivity {
 //        if (curPw.getText().toString().contentEquals(mUser.Password))
     }
 
-    class UserRaw {
+    static class UserRaw {
         String id;
         String Username;
         String Password;
