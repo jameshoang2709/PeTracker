@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -33,4 +34,17 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,GPS_track_activity.class);
         startActivity(intent);
     }
+<<<<<<< HEAD
+=======
+
+    public void toGetQRCode (View view) {
+        Intent intent = new Intent(this, GetQRCode.class);
+        startActivity(intent);
+    }
+
+    public void toLogin (View view) {
+        Intent intent = new Intent(this, UserLogin.class);
+        startActivity(intent);
+    }
+>>>>>>> 8074c2b637704b87b9a204c2cb968cf5d3dd45ea
 }
