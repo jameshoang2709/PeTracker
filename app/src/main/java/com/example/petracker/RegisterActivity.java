@@ -9,26 +9,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class UserLogin extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
     EditText uname;
     EditText pword;
-    Button loginButton;
-    TextView regText;
+    EditText cnfPword;
+    Button regButton;
+    TextView loginText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_login);
+        setContentView(R.layout.activity_register);
 
         uname = (EditText)findViewById(R.id.username);
         pword = (EditText)findViewById(R.id.password);
-        loginButton = (Button)findViewById(R.id.login);
-        regText = (TextView)findViewById(R.id.register);
-        regText.setOnClickListener(new View.OnClickListener() {
+        cnfPword = (EditText)findViewById(R.id.cnf_password);
+        regButton = (Button)findViewById(R.id.register);
+        loginText = (TextView)findViewById(R.id.already_reg);
+        loginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(UserLogin.this, RegisterActivity.class);
-                startActivity(registerIntent);
+                Intent loginIntent = new Intent(RegisterActivity.this, UserLogin.class);
+                startActivity(loginIntent);
             }
         });
     }

@@ -8,8 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".UserLogin">
-    
+    tools:context=".RegisterActivity">
+
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
@@ -36,9 +36,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
         android:inputType="textPassword" />
+    <EditText
+        android:id="@+id/cnf_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:hint="@string/confirm_password"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -46,11 +59,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
-        android:hint="@string/login"
+        android:hint="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/cnf_password"
         app:layout_constraintVertical_bias="0.2" />
 
     <ProgressBar
@@ -64,8 +77,8 @@
         android:layout_marginBottom="64dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/cnf_password"
+        app:layout_constraintStart_toStartOf="@+id/cnf_password"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
@@ -76,19 +89,19 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login">
-        
+        app:layout_constraintTop_toBottomOf="@+id/register">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="@string/not_registered"/>
+            android:text="@string/already_registered"/>
         <TextView
-            android:id="@+id/register"
+            android:id="@+id/already_reg"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:paddingLeft="10dp"
             android:textStyle="bold"
-            android:text="@string/register_here"/>
+            android:text="@string/login_now"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
