@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGetQRCode (View view) {
+        String myId = "abcdefghijkl";
         Intent intent = new Intent(this, GetQRCode.class);
+        intent.putExtra("userId", myId);
         startActivity(intent);
     }
 

@@ -1,10 +1,12 @@
 <resources>
+    <string name="login">Login</string>
     <string name="app_name">PeTracker Views</string>
     <string name="edit_pet_info_name">Edit Pet Info</string>
     <string name="edit_account_info_name">Edit Account Info</string>
     <string name="edit_personal_info_name">Edit Personal Info</string>
     <string name="title_activity_g_p_s_track_activity">GPS tracking Map</string>
     <string name="google_maps_key">AIzaSyDjxcROlBH9rZmNgeOHJh8FqnBOzen42Os</string>
+<<<<<<< HEAD
     <string name="title_activity_test_login">TestLoginActivity</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -15,4 +17,6 @@
     <string name="already_registered">Already Registered?</string>
     <string name="login_now">Login now!</string>
     <string name="register">Register</string>
+=======
+>>>>>>> 386db9260c854ecd9f4e96baa8252fe4863bc28e
 </resources>
