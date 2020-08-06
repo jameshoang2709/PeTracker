@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements NetworkingClass.APIDataListener {
-    NetworkingClass networkingClass;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        networkingClass.connectApi("users");
     }
 
     public void toEditPetInfo (View view) {
@@ -34,10 +32,5 @@ public class MainActivity extends AppCompatActivity implements NetworkingClass.A
     public void toTrackGPSActivity (View view){
         Intent intent = new Intent(this,GPS_track_activity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void returnAPIData(String data){
-
     }
 }
