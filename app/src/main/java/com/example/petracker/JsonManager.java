@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class JsonManager {
 
-    ArrayList<User> parseUserData(String json){
+    static ArrayList<User> parseUserData(String json){
         ArrayList<User> usersFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
