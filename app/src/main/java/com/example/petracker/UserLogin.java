@@ -9,7 +9,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserLogin extends AppCompatActivity {
+    private String url = "https://rocky-hamlet-24243.herokuapp.com/users/";
+    private EditAccountInfo.UserRaw mUser;
     EditText uname;
     EditText pword;
     Button loginButton;
@@ -24,11 +36,47 @@ public class UserLogin extends AppCompatActivity {
         pword = (EditText)findViewById(R.id.password);
         loginButton = (Button)findViewById(R.id.login);
         regText = (TextView)findViewById(R.id.register);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
         regText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent registerIntent = new Intent(UserLogin.this, RegisterActivity.class);
                 startActivity(registerIntent);
+            }
+        });
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               /* String user = uname.getText().toString().trim();
+                String checkUser = url + user;
+                        StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject user = new JSONObject(response);
+                            String id = user.getString("_id");
+                            String mUsername = user.getString("username");
+                            String mPassword = user.getString("password");
+                            String mCustomer = user.getString("customer");
+                            mUser = new EditAccountInfo.UserRaw(id, mUsername, mPassword, mCustomer);
+                            username.setText(mUser.Username);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+*/
+                String user = uname.getText().toString().trim();
+                Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
+                loginIntent.putExtra("userId", user);
+                startActivity(loginIntent);
             }
         });
     }
