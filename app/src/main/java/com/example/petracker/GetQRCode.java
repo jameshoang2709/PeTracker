@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -33,6 +36,7 @@ public class GetQRCode extends AppCompatActivity {
     private Context mContext;
     private Activity mActivity;
 
+    private Button saveQRButton;
     private ImageView qrView;
 //    private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Frocky-hamlet-24243.herokuapp.com%2FadoptionCenters&chs=512x512";
     private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=";
@@ -53,6 +57,7 @@ public class GetQRCode extends AppCompatActivity {
         mContext = getApplicationContext();
         mActivity = GetQRCode.this;
 
+        saveQRButton = (Button) findViewById(R.id.saveQR_button);
         qrView = (ImageView) findViewById(R.id.qrImageView);
 
         // Initialize a new RequestQueue instance
@@ -125,5 +130,10 @@ public class GetQRCode extends AppCompatActivity {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex.getCause());
         }
+    }
+
+    public void onSaveClick (View view) {
+        BitmapDrawable drawable = (BitmapDrawable) qrView.getDrawable();
+        
     }
 }
