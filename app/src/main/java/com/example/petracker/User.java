@@ -4,12 +4,12 @@ public class User {
     String id;
     String Username;
     String Password;
-    Customer customer;
+    String customerId;
 
-    public User(String id, String username, String password, Customer customer) {
+    public User(String id, String username, String password, String customer) {
         this.id = id;
         Username = username;
         Password = password;
-        this.customer = customer;
+        this.customerId = customer;
     }
 }

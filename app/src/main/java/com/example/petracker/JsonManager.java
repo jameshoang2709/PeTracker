@@ -8,14 +8,8 @@ import java.util.ArrayList;
 
 public class JsonManager {
 
-    ArrayList<User> usersFromApi = new ArrayList<>();
-    ArrayList<Customer> customersFromApi = new ArrayList<>();
-    ArrayList<Pet> petsFromApi = new ArrayList<>();
-    ArrayList<Breed> breedsFromApi = new ArrayList<>();
-    ArrayList<AdoptionCenter> centersFromApi = new ArrayList<>();
-    ArrayList<Clinic> clinicsFromApi = new ArrayList<>();
-
-    void parseUserData(String json){
+    ArrayList<User> parseUserData(String json){
+        ArrayList<User> usersFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
             for(int i = 0; i < array.length(); i++){
@@ -24,34 +18,44 @@ public class JsonManager {
                 String uname = userOBJ.getString("username");
                 String psswd = userOBJ.getString("password");
                 String cus_id = userOBJ.getString("customer");
-                Customer customer = getCustomerData(cus_id);
-                User user = new User(id,uname,psswd,customer);
+                User user = new User(id,uname,psswd,cus_id);
                 usersFromApi.add(user);
             }
         }catch(JSONException e) {
             e.printStackTrace();
         }
+
+        return usersFromApi;
     }
 
-//    void parseCustomerData(String json){
-//        try{
-//            JSONArray array = new JSONArray(json);
-//            for(int i = 0; i < array.length(); i++){
-//                JSONObject customerOBJ = array.getJSONObject(i);
-//                String cName = customerOBJ.getString("cust_name");
-//                String email = customerOBJ.getString("cust_email");
-//                String id = customerOBJ.getString("_id");
-//                String tracker = customerOBJ.getString("cust_tracker");
-//                String phone = customerOBJ.getString("cust_phone");
-//                // don't know yet how to reference array of pet ids
-//
-//            }
-//        }catch (JSONException e){
-//            e.printStackTrace();
-//        }
-//    }
+    ArrayList<Customer> parseCustomerData(String json){
+        ArrayList<Customer> customersFromApi = new ArrayList<>();
+        try{
+            JSONArray array = new JSONArray(json);
+            for(int i = 0; i < array.length(); i++){
+                JSONObject customerOBJ = array.getJSONObject(i);
+                String cName = customerOBJ.getString("cust_name");
+                String email = customerOBJ.getString("cust_email");
+                String id = customerOBJ.getString("_id");
+                String tracker = customerOBJ.getString("cust_tracker");
+                String phone = customerOBJ.getString("cust_phone");
+                JSONArray idArray = customerOBJ.getJSONArray("pet");
+                ArrayList<String> pets = new ArrayList<>();
+                for (int j = 0; j < idArray.length(); j++){
+                    pets.add(idArray.getString(i));
+                }
+                Customer customer = new Customer(id,cName,email,tracker,phone,pets);
+                customersFromApi.add(customer);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
 
-    void parsePetData(String json){
+        return customersFromApi;
+    }
+
+    ArrayList<Pet> parsePetData(String json){
+        ArrayList<Pet> petsFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
             for(int i = 0; i < array.length(); i++){
@@ -60,16 +64,18 @@ public class JsonManager {
                 String name = petOBJ.getString("pet_name");
                 int age = petOBJ.getInt("pet_age");
                 String breedID = petOBJ.getString("breed");
-                Breed breed = getBreedData(breedID);
-                Pet pet = new Pet(id,name,age,breed);
+                Pet pet = new Pet(id,name,age,breedID);
                 petsFromApi.add(pet);
             }
         }catch (JSONException e){
             e.printStackTrace();
         }
+
+        return petsFromApi;
     }
 
-    void parseBreedData(String json){
+    ArrayList<Breed> parseBreedData(String json){
+        ArrayList<Breed> breedsFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
             for(int i = 0; i < array.length(); i++){
@@ -82,9 +88,12 @@ public class JsonManager {
         }catch (JSONException e){
             e.printStackTrace();
         }
+
+        return breedsFromApi;
     }
 
-    void parseAdoptionCenterData(String json){
+    ArrayList<AdoptionCenter> parseAdoptionCenterData(String json){
+        ArrayList<AdoptionCenter> centersFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
             for(int i = 0; i < array.length(); i++){
@@ -98,9 +107,11 @@ public class JsonManager {
         }catch (JSONException e){
             e.printStackTrace();
         }
+        return centersFromApi;
     }
 
-    void parseClinicData(String json){
+    ArrayList<Clinic> parseClinicData(String json){
+        ArrayList<Clinic> clinicsFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);
             for(int i = 0; i < array.length(); i++){
@@ -114,46 +125,6 @@ public class JsonManager {
         }catch (JSONException e){
             e.printStackTrace();
         }
+        return clinicsFromApi;
     }
-
-    Customer getCustomerData(String id){
-        Customer customer = new Customer();
-        for(int i = 0; i < customersFromApi.size(); i++){
-            if(id == customersFromApi.get(i).id){
-                customer.id = customersFromApi.get(i).id;
-                customer.customerName = customersFromApi.get(i).customerName;
-                customer.email = customersFromApi.get(i).email;
-                customer.phoneNumber = customersFromApi.get(i).phoneNumber;
-                customer.tracker = customersFromApi.get(i).tracker;
-                customer.pet = customersFromApi.get(i).pet;
-            }
-        }
-        return customer;
-    }
-
-    Pet getPetData(String id){
-        Pet pet = new Pet();
-        for(int i = 0; i < petsFromApi.size(); i++){
-            if(id == petsFromApi.get(i).id){
-                pet.id = petsFromApi.get(i).id;
-                pet.petName = petsFromApi.get(i).petName;
-                pet.petAge = petsFromApi.get(i).petAge;
-                pet.breed = petsFromApi.get(i).breed;
-            }
-        }
-        return pet;
-    }
-
-    Breed getBreedData(String id){
-        Breed breed = new Breed();
-
-        for(int i = 0; i < breedsFromApi.size(); i++){
-            if(id == breedsFromApi.get(i).id){
-                breed.id = breedsFromApi.get(i).id;
-                breed.breedType = breedsFromApi.get(i).breedType;
-            }
-        }
-        return breed;
-    }
-
 }
