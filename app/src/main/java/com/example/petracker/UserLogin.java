@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,11 +52,13 @@ public class UserLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String user = uname.getText().toString().trim();
+                String pswd = pword.getText().toString().trim();
                 String checkUser = url + user;
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
+                        mUser = JsonManager.parseUserData(response).get(0);
+                        /*try {
                             JSONObject tempUser = new JSONObject(response);
                             String id = tempUser.getString("_id");
                             String usrnm = tempUser.getString("username");
@@ -64,20 +67,22 @@ public class UserLogin extends AppCompatActivity {
                             mUser = new User(id, usrnm, psswrd, cust);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-                            mUser = JsonManager.parseUserData(response).get(0);
+                        }*/
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(UserLogin.this, (CharSequence) error, Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                //String user = uname.getText().toString().trim();
-                Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
-                loginIntent.putExtra("userId", user);
-                startActivity(loginIntent);
+                queue.add(stringRequest);
+
+                if (user.equals(mUser.Username) && pswd.equals(mUser.Password)) {
+                    Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
+                    loginIntent.putExtra("userId", user);
+                    startActivity(loginIntent);
+                }
             }
         });
     }
