@@ -28,7 +28,7 @@ public class JsonManager {
         return usersFromApi;
     }
 
-    ArrayList<Customer> parseCustomerData(String json){
+    static ArrayList<Customer> parseCustomerData(String json){
         ArrayList<Customer> customersFromApi = new ArrayList<>();
         try{
             JSONArray array = new JSONArray(json);

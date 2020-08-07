@@ -3,6 +3,7 @@ package com.example.petracker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +38,7 @@ public class EditAccountInfo extends AppCompatActivity {
     private EditText confirmPw;
     private Button update;
 
-    private UserRaw mUser;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +57,11 @@ public class EditAccountInfo extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, getURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                try {
-                    JSONObject user = new JSONObject(response);
-                    String id = user.getString("_id");
-                    String mUsername = user.getString("username");
-                    String mPassword = user.getString("password");
-                    String mCustomer = user.getString("customer");
-                    mUser = new UserRaw(id, mUsername, mPassword, mCustomer);
-                    username.setText(mUser.Username);
-                    //Toast.makeText(getApplicationContext(), "Retrieved user", Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
+                mUser = JsonManager.parseUserData(response).get(0);
+                username.setText(mUser.Username);
+                //Toast.makeText(getApplicationContext(), "Retrieved user", Toast.LENGTH_SHORT).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -93,7 +87,20 @@ public class EditAccountInfo extends AppCompatActivity {
                 JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.PUT, updateURL, parameters, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //Toast.makeText(view.getContext(), response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "New Password Saved", Toast.LENGTH_SHORT).show();
+                        mUser.Password = newPw.getText().toString();
+                        curPw.setText("");
+                        newPw.setText("");
+                        confirmPw.setText("");
+
+                        // Delay 4.5s and go back to the parent activity
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        }, 4500);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -119,20 +126,6 @@ public class EditAccountInfo extends AppCompatActivity {
             curPw.setText("");
             newPw.setText("");
             confirmPw.setText("");
-        }
-    }
-
-    static class UserRaw {
-        String id;
-        String Username;
-        String Password;
-        String customer;
-
-        public UserRaw(String id, String username, String password, String customer) {
-            this.id = id;
-            Username = username;
-            Password = password;
-            this.customer = customer;
         }
     }
 }

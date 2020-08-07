@@ -79,10 +79,10 @@
         app:layout_constraintTop_toBottomOf="@+id/eperi_textView_phone" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/eperi_button_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="80dp"
         android:text="UPDATE"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

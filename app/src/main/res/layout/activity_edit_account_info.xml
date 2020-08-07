@@ -91,10 +91,10 @@
         android:id="@+id/eai_button_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="80dp"
+        android:onClick="onUpdateClick"
         android:text="UPDATE"
         android:textSize="24sp"
-        android:onClick="onUpdateClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
