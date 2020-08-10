@@ -34,12 +34,10 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
-        uname = (EditText)findViewById(R.id.username);
-        pword = (EditText)findViewById(R.id.password);
-        loginButton = (Button)findViewById(R.id.login);
-        regText = (TextView)findViewById(R.id.register);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
+        uname = (EditText) findViewById(R.id.username);
+        pword = (EditText) findViewById(R.id.password);
+        loginButton = (Button) findViewById(R.id.login);
+        regText = (TextView) findViewById(R.id.register);
 
         regText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,16 +46,17 @@ public class UserLogin extends AppCompatActivity {
                 startActivity(registerIntent);
             }
         });
-        loginButton.setOnClickListener(new View.OnClickListener() {
+    }
+
+    public void onLoginClick(View view) {
+        String user = uname.getText().toString().trim();
+        String pswd = pword.getText().toString().trim();
+        String checkUser = url + user;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
             @Override
-            public void onClick(View view) {
-                String user = uname.getText().toString().trim();
-                String pswd = pword.getText().toString().trim();
-                String checkUser = url + user;
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mUser = JsonManager.parseUserData(response).get(0);
+            public void onResponse(String response) {
+                mUser = JsonManager.parseUserData(response).get(0);
                         /*try {
                             JSONObject tempUser = new JSONObject(response);
                             String id = tempUser.getString("_id");
@@ -68,22 +67,20 @@ public class UserLogin extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }*/
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(UserLogin.this, (CharSequence) error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                queue.add(stringRequest);
-
-                if (user.equals(mUser.Username) && pswd.equals(mUser.Password)) {
-                    Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
-                    loginIntent.putExtra("userId", user);
-                    startActivity(loginIntent);
-                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(UserLogin.this, (CharSequence) error, Toast.LENGTH_SHORT).show();
             }
         });
+
+        queue.add(stringRequest);
+
+        if (user.equals(mUser.Username) && pswd.equals(mUser.Password)) {
+            Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
+            loginIntent.putExtra("userId", user);
+            startActivity(loginIntent);
+        }
     }
 }
