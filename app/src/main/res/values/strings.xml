@@ -15,4 +15,7 @@
     <string name="already_registered">Already Registered?</string>
     <string name="login_now">Login now!</string>
     <string name="register">Register</string>
+    <string name="customer_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="phone_number">Phone Number</string>
 </resources>
