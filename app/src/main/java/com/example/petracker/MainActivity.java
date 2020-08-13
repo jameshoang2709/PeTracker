@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userId = getIntent().getStringExtra("userId");
-        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
     }
 
     public void toEditPetInfo (View view) {
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEditPersonalInfo (View view) {
         Intent intent = new Intent(this, EditPersonalInfo.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toGetQRCode (View view) {
         Intent intent = new Intent(this, GetQRCode.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

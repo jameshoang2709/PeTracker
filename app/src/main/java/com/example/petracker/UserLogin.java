@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,16 @@ public class UserLogin extends AppCompatActivity {
                 if (user.contentEquals(mUser.Username) && pswd.contentEquals(mUser.Password)) {
                     Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
                     loginIntent.putExtra("userId", mUser.id);
+
+                    Toast.makeText(view.getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                    // Delay 2s and go back to the parent activity
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    }, 2000);
                     startActivity(loginIntent);
                 }
             }
