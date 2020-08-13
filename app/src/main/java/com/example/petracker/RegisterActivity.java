@@ -19,10 +19,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterActivity extends AppCompatActivity {
-    private String url = "https://rocky-hamlet-24243.herokuapp.com/users/";
+    private String geturl = "https://rocky-hamlet-24243.herokuapp.com/users/";
+    private String custurl = "https://rocky-hamlet-24243.herokuapp.com/customer";
+    private String userurl = "https://rocky-hamlet-24243.herokuapp.com/user";
     private User mUser;
     private Customer mCust;
     EditText uname;
@@ -60,22 +67,75 @@ public class RegisterActivity extends AppCompatActivity {
         String user = uname.getText().toString().trim();
         String pswd = pword.getText().toString().trim();
         String cnfPswd = cnfPword.getText().toString().trim();
-        String checkUser = url + user;
+        String checkUser = geturl + user;
+        boolean userExists;
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                mUser = JsonManager.parseUserData(response).get(0);
-                        /*try {
-                            JSONObject tempUser = new JSONObject(response);
-                            String id = tempUser.getString("_id");
-                            String usrnm = tempUser.getString("username");
-                            String psswrd = tempUser.getString("password");
-                            String cust = tempUser.getString("customer");
-                            mUser = new User(id, usrnm, psswrd, cust);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }*/
+                if (response == null) {
+                    if (pswd.equals(cnfPswd)) {
+                        Map<String, String> params = new HashMap();
+                        params.put("cust_name", cName.getText().toString().trim());
+                        params.put("cust_email", emailAddr.getText().toString().trim());
+                        params.put("cust_tracker", "");
+                        params.put("cust_phone", phoneNum.getText().toString().trim());
+                        JSONObject parameters = new JSONObject(params);
+                        RequestQueue queue2 = Volley.newRequestQueue(view.getContext());
+                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, custurl, parameters, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Map<String, String> params = new HashMap();
+                                params.put("username", user);
+                                params.put("password", pswd);
+                                try {
+                                    params.put("customer", response.getString("id"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                JSONObject parameters = new JSONObject(params);
+                                RequestQueue queue3 = Volley.newRequestQueue(view.getContext());
+                                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, userurl, parameters, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(view.getContext(), "You have been Registered!", Toast.LENGTH_SHORT).show();
+                                        Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                        registerIntent.putExtra("userId", user);
+                                        startActivity(registerIntent);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+
+                                    }
+                                });
+                                queue3.add(jsonRequest);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                        queue2.add(jsonRequest);
+                    } else {
+                        Toast.makeText(view.getContext(), "The two passwords don't match. Please try again!", Toast.LENGTH_SHORT).show();
+                        uname.setText("");
+                        pword.setText("");
+                        cnfPword.setText("");
+                        cName.setText("");
+                        emailAddr.setText("");
+                        phoneNum.setText("");
+                    }
+                } else {
+                    Toast.makeText(view.getContext(), "This user already exists!", Toast.LENGTH_SHORT).show();
+                    uname.setText("");
+                    pword.setText("");
+                    cnfPword.setText("");
+                    cName.setText("");
+                    emailAddr.setText("");
+                    phoneNum.setText("");
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -86,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
 
-        if (!user.equals(mUser.Username)) {
+        /*if (!user.equals(mUser.Username)) {
             if (pswd.equals(cnfPswd)) {
                 /*Customer cust = new Customer();
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, updateURL, parameters, new Response.Listener<JSONObject>() {
@@ -103,10 +163,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                });*/
-                Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                registerIntent.putExtra("userId", user);
-                startActivity(registerIntent);
+                });
+
             } else {
                 Toast.makeText(this, "The two passwords don't match. Please try again!", Toast.LENGTH_SHORT).show();
                 uname.setText("");
@@ -118,6 +176,6 @@ public class RegisterActivity extends AppCompatActivity {
             uname.setText("");
             pword.setText("");
             cnfPword.setText("");
-        }
+        }*/
     }
 }
