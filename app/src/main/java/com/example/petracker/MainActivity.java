@@ -5,14 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userId = getIntent().getStringExtra("userId");
+        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
     }
 
     public void toEditPetInfo (View view) {
@@ -22,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEditAccountInfo (View view) {
         Intent intent = new Intent(this, EditAccountInfo.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

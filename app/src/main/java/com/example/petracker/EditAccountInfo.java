@@ -27,10 +27,11 @@ import java.util.Map;
 
 public class EditAccountInfo extends AppCompatActivity {
 
-    private String userId = "5f2abed1097fbf4475b99735";
+//    private String userId = "5f2abed1097fbf4475b99735";
+    private String userId;
     private String apiURL = "https://rocky-hamlet-24243.herokuapp.com/updateUser/";
-    private String updateURL = "https://rocky-hamlet-24243.herokuapp.com/updateUser/" + userId;
-    private String getURL = "https://rocky-hamlet-24243.herokuapp.com/user/" + userId;
+    private String updateURL;
+    private String getURL;
 
     private TextView username;
     private EditText curPw;
@@ -45,6 +46,10 @@ public class EditAccountInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_account_info);
         setTitle(R.string.edit_account_info_name);
+
+        userId = getIntent().getStringExtra("userId");
+        getURL = "https://rocky-hamlet-24243.herokuapp.com/user/" + userId;
+        updateURL = "https://rocky-hamlet-24243.herokuapp.com/updateUser/" + userId;
 
         username = (TextView) findViewById(R.id.eai_editText_username);
         curPw = (EditText) findViewById(R.id.eai_editText_curPw);
