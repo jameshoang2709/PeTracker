@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,17 +50,18 @@ public class UserLogin extends AppCompatActivity {
     }
 
     public void onLoginClick(View view) {
+        Log.d("Login", "Login button clicked ----------------------------");
         String user = uname.getText().toString().trim();
         String pswd = pword.getText().toString().trim();
         String checkUser = url + user;
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 mUser = JsonManager.parseUserData(response).get(0);
                         /*try {
                             JSONObject tempUser = new JSONObject(response);
-                            String id = tempUser.getString("_id");
+                            String id = tempUser.getString("id");
                             String usrnm = tempUser.getString("username");
                             String psswrd = tempUser.getString("password");
                             String cust = tempUser.getString("customer");
@@ -67,6 +69,11 @@ public class UserLogin extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }*/
+                if (user.contentEquals(mUser.Username) && pswd.contentEquals(mUser.Password)) {
+                    Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
+                    loginIntent.putExtra("userId", mUser.id);
+                    startActivity(loginIntent);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -77,10 +84,5 @@ public class UserLogin extends AppCompatActivity {
 
         queue.add(stringRequest);
 
-        if (user.equals(mUser.Username) && pswd.equals(mUser.Password)) {
-            Intent loginIntent = new Intent(UserLogin.this, MainActivity.class);
-            loginIntent.putExtra("userId", user);
-            startActivity(loginIntent);
-        }
     }
 }
