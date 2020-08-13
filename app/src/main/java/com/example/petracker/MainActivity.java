@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEditPersonalInfo (View view) {
         Intent intent = new Intent(this, EditPersonalInfo.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
