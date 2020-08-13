@@ -24,6 +24,7 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
     private String url = "https://rocky-hamlet-24243.herokuapp.com/users/";
     private User mUser;
+    private Customer mCust;
     EditText uname;
     EditText pword;
     EditText cnfPword;
@@ -85,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         queue.add(stringRequest);
 
-        if (user.equals(mUser.Username)) {
+        if (!user.equals(mUser.Username)) {
             if (pswd.equals(cnfPswd)) {
                 /*Customer cust = new Customer();
                 JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, updateURL, parameters, new Response.Listener<JSONObject>() {
