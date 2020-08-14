@@ -65,7 +65,14 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                mUser = JsonManager.parseUserData(response).get(0);
+                if(response == null){
+                    // create customer
+                    // post customer
+                    // create user
+                    // post user
+                }else{
+                    //Toast user already exists
+                }
                         /*try {
                             JSONObject tempUser = new JSONObject(response);
                             String id = tempUser.getString("_id");
