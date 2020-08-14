@@ -5,19 +5,80 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    static final String USER_ID_STATE_KEY = "userId";
     String userId;
+    private String getCustomerUrl;
+    TextView welcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        userId = getIntent().getStringExtra("userId");
-        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+        if (savedInstanceState != null) {
+            userId = savedInstanceState.getString(USER_ID_STATE_KEY);
+        }
+        else {
+            userId = getIntent().getStringExtra("userId");
+        }
+        getCustomerUrl = "https://rocky-hamlet-24243.herokuapp.com/customerByUserId/" + userId;
+
+        welcome = (TextView) findViewById(R.id.welcome_banner);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest customerRequest = new StringRequest(Request.Method.GET, getCustomerUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject customer = new JSONObject(response);
+                    welcome.setText("Welcome, " + customer.getString("cust_name") + "!");
+                } catch (JSONException e) {e.printStackTrace();}
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(customerRequest);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(USER_ID_STATE_KEY, userId);
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        userId = savedInstanceState.getString(USER_ID_STATE_KEY);
     }
 
     public void toEditPetInfo (View view) {
@@ -33,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toEditPersonalInfo (View view) {
         Intent intent = new Intent(this, EditPersonalInfo.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
@@ -43,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toGetQRCode (View view) {
         Intent intent = new Intent(this, GetQRCode.class);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

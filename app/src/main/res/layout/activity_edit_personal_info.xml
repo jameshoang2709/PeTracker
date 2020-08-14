@@ -53,7 +53,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="textPostalAddress"
+        android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/eperi_textView_email" />
 
@@ -83,9 +83,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:text="UPDATE"
+        android:text="SAVE"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eperi_button_back" />
+
+    <Button
+        android:id="@+id/eperi_button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:background="@color/backButton"
+        android:text="Back"
+        android:textSize="24sp"
+        android:onClick="onPersonalBackClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/eperi_button_update"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

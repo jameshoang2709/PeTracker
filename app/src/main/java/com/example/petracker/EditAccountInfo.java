@@ -133,4 +133,8 @@ public class EditAccountInfo extends AppCompatActivity {
             confirmPw.setText("");
         }
     }
+
+    public void onAccountBackClick (View view) {
+        finish();
+    }
 }

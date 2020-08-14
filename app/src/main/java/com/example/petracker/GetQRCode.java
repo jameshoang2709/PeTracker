@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,9 @@ import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,16 +52,20 @@ public class GetQRCode extends AppCompatActivity {
     private String qrApi = "https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=";
     private String databaseApi = "https://rocky-hamlet-24243.herokuapp.com/customer/";
 
-    String userId = "5f2abeba097fbf4475b9890c";
-    String userInfoUrl = databaseApi + userId;
+    private String userId;
+    private String userInfoUrl;
+    private String getCustomerUrl;
 
-    String qrURL;
     public static final ExecutorService apiExecutor = Executors.newFixedThreadPool(4);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_q_r_code);
+
+        userId = getIntent().getStringExtra("userId");
+//        userInfoUrl = databaseApi + userId;
+        getCustomerUrl = "https://rocky-hamlet-24243.herokuapp.com/customerByUserId/" + userId;
 
         // Get the application context
         mContext = getApplicationContext();
@@ -69,96 +77,58 @@ public class GetQRCode extends AppCompatActivity {
         // Initialize a new RequestQueue instance
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
 
-        //RequestFuture<String> future = RequestFuture.newFuture();
-        // Get customer's info - Volley WILL run stringRequest FIRST then imageRequest
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, userInfoUrl, future, future);
-//
-//        requestQueue.add(stringRequest);
+        StringRequest customerRequest = new StringRequest(Request.Method.GET, getCustomerUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject customer = new JSONObject(response);
+                    userInfoUrl = databaseApi + customer.getString("_id");
 
-        // Initialize a new ImageRequest
-        ImageRequest imageRequest = new ImageRequest(
+                    RequestQueue imageQueue = Volley.newRequestQueue(mContext);
+                    // Initialize a new ImageRequest
+                    ImageRequest imageRequest = new ImageRequest(
 //                qrApi, // Image URL
-                qrApi + encodeValue(userInfoUrl),
-                new Response.Listener<Bitmap>() { // Bitmap listener
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        // Do something with response
-                        qrView.setImageBitmap(response);
+                            qrApi + encodeValue(userInfoUrl),
+                            new Response.Listener<Bitmap>() { // Bitmap listener
+                                @Override
+                                public void onResponse(Bitmap response) {
+                                    // Do something with response
+                                    qrView.setImageBitmap(response);
 
-                        // Save this downloaded bitmap to internal storage
-                        //Uri uri = saveImageToInternalStorage(response);
+                                    // Save this downloaded bitmap to internal storage
+                                    //Uri uri = saveImageToInternalStorage(response);
 
-                        // Display the internal storage saved image to image view
-                        //mImageViewInternal.setImageURI(uri);
-                    }
-                },
-                0, // Image width
-                0, // Image height
-                ImageView.ScaleType.CENTER_CROP, // Image scale type
-                Bitmap.Config.RGB_565, //Image decode configuration
-                new Response.ErrorListener() {
-                    // Error listener
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Do something with error response
-                        error.printStackTrace();
-                        //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
-                    }
-                }
-        );
-        requestQueue.add(imageRequest);
+                                    // Display the internal storage saved image to image view
+                                    //mImageViewInternal.setImageURI(uri);
+                                }
+                            },
+                            0, // Image width
+                            0, // Image height
+                            ImageView.ScaleType.CENTER_CROP, // Image scale type
+                            Bitmap.Config.RGB_565, //Image decode configuration
+                            new Response.ErrorListener() {
+                                // Error listener
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    // Do something with error response
+                                    error.printStackTrace();
+                                    //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+                                }
+                            }
+                    );
+                    requestQueue.add(imageRequest);
 
-//        apiExecutor.execute(()-> {
-//            try {
-//                String response = future.get(30, TimeUnit.SECONDS); // This will block the requestQueue execution
-//                String encodedInfo = encodeValue(response);
-//                qrURL = qrApi + encodedInfo;
-//                Log.d("GetInfoThread", qrURL);
-//
-//
-//
-//                // Initialize a new ImageRequest
-//                ImageRequest imageRequest = new ImageRequest(
-////                qrApi, // Image URL
-//                        qrURL,
-//                        new Response.Listener<Bitmap>() { // Bitmap listener
-//                            @Override
-//                            public void onResponse(Bitmap response) {
-//                                // Do something with response
-//                                qrView.setImageBitmap(response);
-//
-//                                // Save this downloaded bitmap to internal storage
-//                                //Uri uri = saveImageToInternalStorage(response);
-//
-//                                // Display the internal storage saved image to image view
-//                                //mImageViewInternal.setImageURI(uri);
-//                            }
-//                        },
-//                        0, // Image width
-//                        0, // Image height
-//                        ImageView.ScaleType.CENTER_CROP, // Image scale type
-//                        Bitmap.Config.RGB_565, //Image decode configuration
-//                        new Response.ErrorListener() {
-//                            // Error listener
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                // Do something with error response
-//                                error.printStackTrace();
-//                                //Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
-//                            }
-//                        }
-//                );
-//                requestQueue.add(imageRequest);
-//
-//
-//            } catch (InterruptedException e) { }
-//            catch (ExecutionException e) {}
-//            catch (TimeoutException e) {
-//                Log.d("GetCustomerInfo", e.toString());
-//            }
-//        });
-        // Add ImageRequest to the RequestQueue
-//        requestQueue.add(imageRequest);
+                } catch (JSONException e) {e.printStackTrace();}
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(customerRequest);
     }
 
     // Method to encode a string value using `UTF-8` encoding scheme
@@ -189,6 +159,16 @@ public class GetQRCode extends AppCompatActivity {
             outStream.flush();
             outStream.close();
             Toast.makeText(this, "QR code saved to Gallery", Toast.LENGTH_SHORT).show();
+
+            //Delay
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 2000);
+
         } catch (FileNotFoundException e) {
             Log.e("SaveQR", e.getLocalizedMessage());
             e.printStackTrace();
@@ -197,5 +177,9 @@ public class GetQRCode extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    public void onQRBackClick (View view) {
+        finish();
     }
 }
