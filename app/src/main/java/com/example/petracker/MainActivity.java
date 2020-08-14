@@ -95,7 +95,19 @@ public class MainActivity extends AppCompatActivity {
     public void toEditPersonalInfo (View view) {
         Intent intent = new Intent(this, EditPersonalInfo.class);
         intent.putExtra("userId", userId);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==2)
+        {
+            String custName = data.getStringExtra("name");
+            welcome.setText("Welcome, " + custName + "!");
+        }
     }
 
     public void toTrackGPSActivity (View view){

@@ -42,6 +42,8 @@ public class EditPersonalInfo extends AppCompatActivity {
     EditText phone;
     Button updateButton;
 
+    String currentName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,8 @@ public class EditPersonalInfo extends AppCompatActivity {
         phone = (EditText) findViewById(R.id.eperi_editTextPhone_phone);
         updateButton = (Button) findViewById(R.id.eperi_button_update);
 
+//        final String[] currentName = new String[1];
+
         RequestQueue queue = Volley.newRequestQueue(this);
 
         StringRequest customerRequest = new StringRequest(Request.Method.GET, getCustomerUrl, new Response.Listener<String>() {
@@ -66,6 +70,7 @@ public class EditPersonalInfo extends AppCompatActivity {
                     JSONObject mCustomer = new JSONObject(response);
                     customerId = mCustomer.getString("_id");
                     name.setText(mCustomer.getString("cust_name"));
+                    currentName = mCustomer.getString("cust_name");
                     email.setText(mCustomer.getString("cust_email"));
                     phone.setText(mCustomer.getString("cust_phone"));
                 } catch (JSONException e) {e.printStackTrace();}
@@ -110,6 +115,9 @@ public class EditPersonalInfo extends AppCompatActivity {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                Intent intent = new Intent();
+                                intent.putExtra("name", mName);
+                                setResult(2, intent);
                                 finish();
                             }
                         }, 4500);
@@ -135,6 +143,9 @@ public class EditPersonalInfo extends AppCompatActivity {
     }
 
     public void onPersonalBackClick (View view) {
+        Intent intent = new Intent();
+        intent.putExtra("name", currentName);
+        setResult(2, intent);
         finish();
     }
     // Override the back button on the Action bar
