@@ -10,13 +10,44 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    static final String USER_ID_STATE_KEY = "userId";
     String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         userId = getIntent().getStringExtra("userId");
+
+//        if (savedInstanceState != null) {
+//            userId = savedInstanceState.getString(USER_ID_STATE_KEY);
+//        }
+//        else {
+//            userId = getIntent().getStringExtra("userId");
+//        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(USER_ID_STATE_KEY, userId);
+        // call superclass to save any view hierarchy
+        super.onSaveInstanceState(outState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        userId = savedInstanceState.getString(USER_ID_STATE_KEY);
     }
 
     public void toEditPetInfo (View view) {

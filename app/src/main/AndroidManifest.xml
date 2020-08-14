@@ -49,14 +49,14 @@
             android:name=".GPS_track_activity"
             android:label="@string/title_activity_g_p_s_track_activity" />
         <activity
-            android:name=".EditPersonalInfo"
-            android:parentActivityName=".MainActivity" />
+            android:name=".EditPersonalInfo" />
+<!--            android:parentActivityName=".MainActivity" />-->
         <activity
-            android:name=".EditAccountInfo"
-            android:parentActivityName=".MainActivity" />
+            android:name=".EditAccountInfo" />
+<!--            android:parentActivityName=".MainActivity" />-->
         <activity
-            android:name=".EditPetInfo"
-            android:parentActivityName=".MainActivity" />
+            android:name=".EditPetInfo" />
+<!--            android:parentActivityName=".MainActivity" />-->
         <activity android:name=".MainActivity">
 
         </activity>

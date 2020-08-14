@@ -93,11 +93,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
         android:onClick="onUpdateClick"
-        android:text="UPDATE"
+        android:text="SAVE"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/eai_button_back" />
 
     <TextView
         android:id="@+id/eai_editText_username"
@@ -109,5 +110,19 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/eai_textView_username" />
+
+    <Button
+        android:id="@+id/eai_button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:background="@color/backButton"
+        android:text="Back"
+        android:textSize="24sp"
+        android:onClick="onAccountBackClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/eai_button_update"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
