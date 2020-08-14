@@ -77,4 +77,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("userId", userId);
         startActivity(intent);
     }
+
+    public void toLogin (View view) {
+        Intent intent = new Intent(this, UserLogin.class);
+        startActivity(intent);
+    }
+
 }
