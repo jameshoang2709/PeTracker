@@ -5,27 +5,60 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
 
     static final String USER_ID_STATE_KEY = "userId";
     String userId;
+    private String getCustomerUrl;
+    TextView welcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userId = getIntent().getStringExtra("userId");
+        if (savedInstanceState != null) {
+            userId = savedInstanceState.getString(USER_ID_STATE_KEY);
+        }
+        else {
+            userId = getIntent().getStringExtra("userId");
+        }
+        getCustomerUrl = "https://rocky-hamlet-24243.herokuapp.com/customerByUserId/" + userId;
 
-//        if (savedInstanceState != null) {
-//            userId = savedInstanceState.getString(USER_ID_STATE_KEY);
-//        }
-//        else {
-//            userId = getIntent().getStringExtra("userId");
-//        }
+        welcome = (TextView) findViewById(R.id.welcome_banner);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest customerRequest = new StringRequest(Request.Method.GET, getCustomerUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject customer = new JSONObject(response);
+                    welcome.setText("Welcome, " + customer.getString("cust_name") + "!");
+                } catch (JSONException e) {e.printStackTrace();}
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(customerRequest);
+
     }
 
     @Override

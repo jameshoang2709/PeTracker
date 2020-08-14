@@ -178,4 +178,8 @@ public class GetQRCode extends AppCompatActivity {
         }
 
     }
+
+    public void onQRBackClick (View view) {
+        finish();
+    }
 }
