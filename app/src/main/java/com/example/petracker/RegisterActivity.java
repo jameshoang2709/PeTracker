@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,53 +74,65 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, checkUser, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response == null) {
-                    if (pswd.equals(cnfPswd)) {
-                        Map<String, String> params = new HashMap();
-                        params.put("cust_name", cName.getText().toString().trim());
-                        params.put("cust_email", emailAddr.getText().toString().trim());
-                        params.put("cust_tracker", "");
-                        params.put("cust_phone", phoneNum.getText().toString().trim());
-                        JSONObject parameters = new JSONObject(params);
-                        RequestQueue queue2 = Volley.newRequestQueue(view.getContext());
-                        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, custurl, parameters, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Map<String, String> params = new HashMap();
-                                params.put("username", user);
-                                params.put("password", pswd);
-                                try {
-                                    params.put("customer", response.getString("id"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                mUser = JsonManager.parseUserData(response).get(0);
+                try {
+                    JSONArray res = new JSONArray(response);
+                    if (res.length() == 0) {
+                        if (pswd.equals(cnfPswd)) {
+                            Map<String, String> params = new HashMap();
+                            params.put("cust_name", cName.getText().toString().trim());
+                            params.put("cust_email", emailAddr.getText().toString().trim());
+                            params.put("cust_tracker", "");
+                            params.put("cust_phone", phoneNum.getText().toString().trim());
+                            JSONObject parameters = new JSONObject(params);
+                            RequestQueue queue2 = Volley.newRequestQueue(view.getContext());
+                            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, custurl, parameters, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Map<String, String> params = new HashMap();
+                                    params.put("username", user);
+                                    params.put("password", pswd);
+                                    try {
+                                        params.put("customer", response.getString("id"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    JSONObject parameters = new JSONObject(params);
+                                    RequestQueue queue3 = Volley.newRequestQueue(view.getContext());
+                                    JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, userurl, parameters, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            Toast.makeText(view.getContext(), "You have been Registered!", Toast.LENGTH_SHORT).show();
+                                            Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
+                                            registerIntent.putExtra("userId", mUser.id);
+                                            startActivity(registerIntent);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+                                        }
+                                    });
+                                    queue3.add(jsonRequest);
                                 }
-                                JSONObject parameters = new JSONObject(params);
-                                RequestQueue queue3 = Volley.newRequestQueue(view.getContext());
-                                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, userurl, parameters, new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        Toast.makeText(view.getContext(), "You have been Registered!", Toast.LENGTH_SHORT).show();
-                                        Intent registerIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                                        registerIntent.putExtra("userId", user);
-                                        startActivity(registerIntent);
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
 
-                                    }
-                                });
-                                queue3.add(jsonRequest);
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                        queue2.add(jsonRequest);
+                                }
+                            });
+                            queue2.add(jsonRequest);
+                        } else {
+                            Toast.makeText(view.getContext(), "The two passwords don't match. Please try again!", Toast.LENGTH_SHORT).show();
+                            uname.setText("");
+                            pword.setText("");
+                            cnfPword.setText("");
+                            cName.setText("");
+                            emailAddr.setText("");
+                            phoneNum.setText("");
+                        }
                     } else {
-                        Toast.makeText(view.getContext(), "The two passwords don't match. Please try again!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "This user already exists!", Toast.LENGTH_SHORT).show();
                         uname.setText("");
                         pword.setText("");
                         cnfPword.setText("");
@@ -127,14 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
                         emailAddr.setText("");
                         phoneNum.setText("");
                     }
-                } else {
-                    Toast.makeText(view.getContext(), "This user already exists!", Toast.LENGTH_SHORT).show();
-                    uname.setText("");
-                    pword.setText("");
-                    cnfPword.setText("");
-                    cName.setText("");
-                    emailAddr.setText("");
-                    phoneNum.setText("");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
